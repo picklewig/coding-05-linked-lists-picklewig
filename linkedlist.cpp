@@ -13,51 +13,52 @@ LinkedList::~LinkedList(){
     clearList();
 }
 
-bool LinkedList::addNode(int id, string* information){ //needs more statements for sorting order
-    bool added = false;                                //needs to pass id and info into data member of node
+bool LinkedList::addNode(int id, string* information){
+    bool added = false;
     if(id > 0 and *information != ""){
         Node *current = head;
         Node *temp;
 
         while(id > current->data.id){
             current = current->next;
-            if(current->data.id == id){
-                break;
+        }
+        if(id != current->data.id) {
+            if (id < current->data.id and current->prev != NULL) { //adds node in list body
+                Node *insertnode = new Node;
+                insertnode->data.id = id;
+                insertnode->data.data = *information;
+
+                insertnode->next = current;
+                insertnode->prev = current->prev;
+                current->prev->next = insertnode;
+                current->prev = insertnode;
+
+                added = true;
+            }
+            else if (id < current->data.id and current->prev == NULL) { //adds new head node
+                Node *insertnode = new Node;
+                insertnode->data.id = id;
+                insertnode->data.data = *information;
+
+                current->prev = insertnode;
+                insertnode->next = current;
+                insertnode->prev = NULL;
+                head = insertnode;
+
+                added = true;
+            }
+            else if (id > current->data.id and current->next == NULL) { //adds new tail node
+                Node *insertnode = new Node;
+                insertnode->data.id = id;
+                insertnode->data.data = *information;
+
+                insertnode->next = NULL;
+                insertnode->prev = current;
+                current->next = insertnode;
+
+                added = true;
             }
         }
-        if(id < current->data.id and current->prev != NULL){
-            Node *insertnode = new Node;
-            insertnode->data.id = id;
-            insertnode->data.data = *information;
-
-            temp = current->prev;
-            current->prev = insertnode;
-            insertnode->prev = temp;
-            insertnode->next = current;
-            temp->next = insertnode;
-
-            added = true;
-        }
-        if(id > current->data.id and current->next == NULL){
-            Node *insertnode = new Node;
-            insertnode->data.id = id;
-            insertnode->data.data = *information;
-
-            insertnode->next = NULL;
-            insertnode->prev = current;
-            current->next = insertnode;
-        }
-
-        /*
-        head->prev = new;           //layout for adding new head
-        head->prev->next = head;
-        head->prev->prev = NULL;
-        head = new;
-
-        new->next = NULL;           //layout for adding new tail
-        new->prev = current;
-        current->next = new;
-         */
     }
     return added;
 }
