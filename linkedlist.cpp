@@ -79,19 +79,46 @@ bool LinkedList::deleteNode(int id){
 }
 
 bool LinkedList::getNode(int id, Data* emptyStruct){
+    bool gotten = false;
+    Node *current = head;
 
+    while(id != current->data.id){
+        current = current->next;
+    }
+    if(id == current->data.id){
+        emptyStruct->id = current->data.id;
+        emptyStruct->data = current->data.data;
+        gotten = true;
+    }
+    return gotten;
 }
 
 void LinkedList::printList(bool backwards){
+    Node *current = head;
+    int nodeNumber = 0;
 
+    while(current = current->next){
+        nodeNumber++;
+        cout << nodeNumber << ": " << current->data.id << ": " << current->data.data << endl;
+    }
 }
 
 int LinkedList::getCount(){
+    Node *current = head;
+    int nodeCount = 0;
 
+    while(current = current->next){
+        nodeCount++;
+    }
+    return nodeCount;
 }
 
 bool LinkedList::clearList(){
+    Node *current = head;
 
+    while(current = current->next){
+        delete current;
+    }
 }
 
 bool LinkedList::exists(int id){

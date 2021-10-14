@@ -9,6 +9,10 @@
 
 #include "data.h"
 #include "string"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 using std::string;
 
 class LinkedList{
