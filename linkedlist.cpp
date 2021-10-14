@@ -113,7 +113,7 @@ int LinkedList::getCount(){
     return nodeCount;
 }
 
-bool LinkedList::clearList(){
+void LinkedList::clearList(){
     Node *current = head;
 
     while(current = current->next){
@@ -122,5 +122,13 @@ bool LinkedList::clearList(){
 }
 
 bool LinkedList::exists(int id){
+    bool found = false;
+    Node *current = head;
 
+    while(current = current->next){
+        if(current->data.id == id){
+            found = true;
+        }
+    }
+    return found;
 }

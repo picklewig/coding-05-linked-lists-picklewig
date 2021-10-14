@@ -25,7 +25,7 @@ class LinkedList{
         bool getNode(int, Data*);
         void printList(bool = false);
         int getCount();
-        bool clearList();
+        void clearList();
         bool exists(int);
     private:
         Node *head;
