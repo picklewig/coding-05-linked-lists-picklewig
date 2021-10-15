@@ -73,13 +73,24 @@ bool LinkedList::deleteNode(int id){
     bool deleted = false;
     Node *current = head;
 
-    while(current = current->next){
-        if(id == current->data.id){
+    while(id != current->data.id and current->next != NULL){
+        current = current->next;
+    }
+    if(current != NULL and id == current->data.id){
+        if (current->next == NULL){ //deletes tail node
+            cout << endl << "in tail" << endl;
+            current->prev->next = NULL;
+        } else if (current->prev == NULL){ //deletes head node
+            cout << endl << "in head" << endl;
+            current->next->prev = NULL;
+            current->next = head;
+        } else if (current->next != NULL and current->prev != NULL){ //deletes middle node
+            cout << endl << "in body" << endl;
             current->prev->next = current->next;
             current->next->prev = current->prev;
-            delete current;
-            deleted = true;
         }
+        delete current;
+        deleted = true;
     }
     return deleted;
 }
@@ -100,7 +111,7 @@ bool LinkedList::getNode(int id, Data* emptyStruct){
     return gotten;
 }
 
-void LinkedList::printList(bool backwards){
+void LinkedList::printList(bool backwards){ //doesnt read backwards yet
     Node *current = head;
     int nodeNumber = 0;
 
