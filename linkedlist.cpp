@@ -17,7 +17,6 @@ bool LinkedList::addNode(int id, string* information){
     cout << endl << "addNode called" << endl;
     bool added = false;
     if(id > 0 and *information != ""){
-        cout << endl << "1st if" << endl;
         Node *current = head;
         //head initially is NULL
 
@@ -32,8 +31,7 @@ bool LinkedList::addNode(int id, string* information){
             added = true;
         }
         else{
-            while (current and id > current->data.id and id != current->data.id and current->next != NULL) {
-                cout << endl << "while loop" << endl;
+            while(id > current->data.id and id != current->data.id and current->next != NULL){
                 current = current->next;
             }
 
@@ -41,8 +39,7 @@ bool LinkedList::addNode(int id, string* information){
             insertNode->data.id = id;
             insertNode->data.data = *information;
 
-            if (id < current->data.id and current->prev != NULL) { //adds node in list body
-                cout << endl << "added body" << endl;
+            if(id < current->data.id and current->prev != NULL){ //adds node in list body
 
                 insertNode->next = current;
                 insertNode->prev = current->prev;
@@ -51,7 +48,6 @@ bool LinkedList::addNode(int id, string* information){
 
                 added = true;
             } else if (id < current->data.id and current->prev == NULL) { //adds new head node
-                cout << endl << "added new head" << endl;
 
                 current->prev = insertNode;
                 insertNode->next = current;
@@ -60,7 +56,6 @@ bool LinkedList::addNode(int id, string* information){
 
                 added = true;
             } else if (id > current->data.id and current->next == NULL) { //adds new tail node
-                cout << endl << "added new tail" << endl;
 
                 insertNode->next = NULL;
                 insertNode->prev = current;
@@ -78,14 +73,13 @@ bool LinkedList::deleteNode(int id){
     bool deleted = false;
     Node *current = head;
 
-    while(id != current->data.id){
-        current = current->next;
-    }
-    if(id == current->data.id){
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
-        delete current;
-        deleted = true;
+    while(current = current->next){
+        if(id == current->data.id){
+            current->prev->next = current->next;
+            current->next->prev = current->prev;
+            delete current;
+            deleted = true;
+        }
     }
     return deleted;
 }
@@ -95,7 +89,7 @@ bool LinkedList::getNode(int id, Data* emptyStruct){
     bool gotten = false;
     Node *current = head;
 
-    while(id != current->data.id){
+    while(current->next != NULL and id != current->data.id){
         current = current->next;
     }
     if(id == current->data.id){
