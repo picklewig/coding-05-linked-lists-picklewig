@@ -14,18 +14,35 @@ LinkedList::~LinkedList(){
 }
 
 bool LinkedList::addNode(int id, string* information){
+    cout << endl << "addNode called" << endl;
     bool added = false;
     if(id > 0 and *information != ""){
+        cout << endl << "1st if" << endl;
         Node *current = head;
+        //head initially is NULL
 
-        while(id > current->data.id){
-            current = current->next;
+        if(head == NULL){
+            head = new Node;
+            head->data.id = id;
+            head->data.data = *information;
+
+            head->next = NULL;
+            head->prev = NULL;
+
+            added = true;
         }
-        if(id != current->data.id) {
+        else{
+            while (current and id > current->data.id and id != current->data.id and current->next != NULL) {
+                cout << endl << "while loop" << endl;
+                current = current->next;
+            }
+
+            Node *insertNode = new Node;
+            insertNode->data.id = id;
+            insertNode->data.data = *information;
+
             if (id < current->data.id and current->prev != NULL) { //adds node in list body
-                Node *insertNode = new Node;
-                insertNode->data.id = id;
-                insertNode->data.data = *information;
+                cout << endl << "added body" << endl;
 
                 insertNode->next = current;
                 insertNode->prev = current->prev;
@@ -33,11 +50,8 @@ bool LinkedList::addNode(int id, string* information){
                 current->prev = insertNode;
 
                 added = true;
-            }
-            else if (id < current->data.id and current->prev == NULL) { //adds new head node
-                Node *insertNode = new Node;
-                insertNode->data.id = id;
-                insertNode->data.data = *information;
+            } else if (id < current->data.id and current->prev == NULL) { //adds new head node
+                cout << endl << "added new head" << endl;
 
                 current->prev = insertNode;
                 insertNode->next = current;
@@ -45,11 +59,8 @@ bool LinkedList::addNode(int id, string* information){
                 head = insertNode;
 
                 added = true;
-            }
-            else if (id > current->data.id and current->next == NULL) { //adds new tail node
-                Node *insertNode = new Node;
-                insertNode->data.id = id;
-                insertNode->data.data = *information;
+            } else if (id > current->data.id and current->next == NULL) { //adds new tail node
+                cout << endl << "added new tail" << endl;
 
                 insertNode->next = NULL;
                 insertNode->prev = current;
@@ -63,6 +74,7 @@ bool LinkedList::addNode(int id, string* information){
 }
 
 bool LinkedList::deleteNode(int id){
+    cout << endl << "deleteNode called" << endl;
     bool deleted = false;
     Node *current = head;
 
@@ -79,6 +91,7 @@ bool LinkedList::deleteNode(int id){
 }
 
 bool LinkedList::getNode(int id, Data* emptyStruct){
+    cout << endl << "getNode called" << endl;
     bool gotten = false;
     Node *current = head;
 
@@ -97,9 +110,10 @@ void LinkedList::printList(bool backwards){
     Node *current = head;
     int nodeNumber = 0;
 
-    while(current = current->next){
+    while(current){
         nodeNumber++;
         cout << nodeNumber << ": " << current->data.id << ": " << current->data.data << endl;
+        current = current->next;
     }
 }
 
@@ -107,13 +121,15 @@ int LinkedList::getCount(){
     Node *current = head;
     int nodeCount = 0;
 
-    while(current = current->next){
+    while(current){
+        current = current->next;
         nodeCount++;
     }
     return nodeCount;
 }
 
 void LinkedList::clearList(){
+    cout << endl << "clearlist called" << endl;
     Node *current = head;
 
     while(current = current->next){
@@ -122,6 +138,7 @@ void LinkedList::clearList(){
 }
 
 bool LinkedList::exists(int id){
+    cout << endl << "exists called" << endl;
     bool found = false;
     Node *current = head;
 
