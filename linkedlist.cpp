@@ -14,53 +14,40 @@ LinkedList::~LinkedList(){
 }
 
 bool LinkedList::addNode(int id, string* information){
-    cout << endl << "addNode called" << endl;
     bool added = false;
     if(id > 0 and *information != ""){
-        Node *current = head;
-        //head initially is NULL
-
+        Node *current = head; //head initially is NULL
         if(head == NULL){
             head = new Node;
             head->data.id = id;
             head->data.data = *information;
-
             head->next = NULL;
             head->prev = NULL;
-
             added = true;
         }
         else{
             while(id > current->data.id and id != current->data.id and current->next != NULL){
                 current = current->next;
             }
-
             Node *insertNode = new Node;
             insertNode->data.id = id;
             insertNode->data.data = *information;
-
             if(id < current->data.id and current->prev != NULL){ //adds node in list body
-
                 insertNode->next = current;
                 insertNode->prev = current->prev;
                 current->prev->next = insertNode;
                 current->prev = insertNode;
-
                 added = true;
             } else if (id < current->data.id and current->prev == NULL) { //adds new head node
-
                 current->prev = insertNode;
                 insertNode->next = current;
                 insertNode->prev = NULL;
                 head = insertNode;
-
                 added = true;
             } else if (id > current->data.id and current->next == NULL) { //adds new tail node
-
                 insertNode->next = NULL;
                 insertNode->prev = current;
                 current->next = insertNode;
-
                 added = true;
             }
         }
@@ -68,23 +55,25 @@ bool LinkedList::addNode(int id, string* information){
     return added;
 }
 
-bool LinkedList::deleteNode(int id){
+bool LinkedList::deleteNode(int id){ //infinite loop
     cout << endl << "deleteNode called" << endl;
     bool deleted = false;
     Node *current = head;
 
-    while(id != current->data.id and current->next != NULL){
+    while(current and id != current->data.id){
+        cout << endl << "in loop" << endl;
         current = current->next;
     }
-    if(current != NULL and id == current->data.id){
-        if (current->next == NULL){ //deletes tail node
+    if(current and id == current->data.id){
+        cout << endl << "in delete process" << endl;
+        if(current->next == NULL){ //deletes tail node
             cout << endl << "in tail" << endl;
             current->prev->next = NULL;
-        } else if (current->prev == NULL){ //deletes head node
+        } else if(current->prev == NULL){ //deletes head node
             cout << endl << "in head" << endl;
             current->next->prev = NULL;
             current->next = head;
-        } else if (current->next != NULL and current->prev != NULL){ //deletes middle node
+        } else{ //deletes middle node
             cout << endl << "in body" << endl;
             current->prev->next = current->next;
             current->next->prev = current->prev;
