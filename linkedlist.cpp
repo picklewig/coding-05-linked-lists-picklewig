@@ -55,7 +55,7 @@ bool LinkedList::addNode(int id, string* information){
     return added;
 }
 
-bool LinkedList::deleteNode(int id){ //infinite loop, cause might be in addNode
+bool LinkedList::deleteNode(int id){
     bool deleted = false;
     Node *current = head;
     while(current and id != current->data.id){
@@ -71,6 +71,9 @@ bool LinkedList::deleteNode(int id){ //infinite loop, cause might be in addNode
             current->prev->next = current->next;
             current->next->prev = current->prev;
         }
+        if(current == head){
+            head = NULL;
+        }
         delete current;
         deleted = true;
     }
@@ -78,7 +81,6 @@ bool LinkedList::deleteNode(int id){ //infinite loop, cause might be in addNode
 }
 
 bool LinkedList::getNode(int id, Data* emptyStruct){
-    cout << endl << "getNode called" << endl;
     bool gotten = false;
     Node *current = head;
 
@@ -93,7 +95,7 @@ bool LinkedList::getNode(int id, Data* emptyStruct){
     return gotten;
 }
 
-void LinkedList::printList(bool backwards){ //doesnt read backwards yet
+void LinkedList::printList(bool backwards){
     Node *current = head;
     int nodeNumber = 0;
 
@@ -113,6 +115,9 @@ void LinkedList::printList(bool backwards){ //doesnt read backwards yet
             current = current->prev;
         }
     }
+    if(nodeNumber == 0){
+        cout << "\tlist is empty" << endl;
+    }
 }
 
 int LinkedList::getCount(){
@@ -127,22 +132,26 @@ int LinkedList::getCount(){
 }
 
 void LinkedList::clearList(){
-    cout << endl << "clearlist called" << endl;
     Node *current = head;
 
-    while(current = current->next){
-        delete current;
+    while(head and head->next){
+        current = current->next;
+        head = current;
+        delete current->prev;
     }
+    delete head;
+    head = NULL;
 }
 
 bool LinkedList::exists(int id){
     bool found = false;
     Node *current = head;
 
-    while(current = current->next){
+    while(current){
         if(current->data.id == id){
             found = true;
         }
+        current = current->next;
     }
     return found;
 }
