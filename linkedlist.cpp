@@ -26,7 +26,7 @@ bool LinkedList::addNode(int id, string* information){
             added = true;
         }
         else{
-            while(id > current->data.id and id != current->data.id and current->next != NULL){
+            while(id > current->data.id and current->next != NULL){
                 current = current->next;
             }
             Node *insertNode = new Node;
@@ -55,26 +55,19 @@ bool LinkedList::addNode(int id, string* information){
     return added;
 }
 
-bool LinkedList::deleteNode(int id){ //infinite loop
-    cout << endl << "deleteNode called" << endl;
+bool LinkedList::deleteNode(int id){ //infinite loop, cause might be in addNode
     bool deleted = false;
     Node *current = head;
-
     while(current and id != current->data.id){
-        cout << endl << "in loop" << endl;
         current = current->next;
     }
-    if(current and id == current->data.id){
-        cout << endl << "in delete process" << endl;
-        if(current->next == NULL){ //deletes tail node
-            cout << endl << "in tail" << endl;
+    if(current and id == current->data.id) {
+        if (current->prev != NULL and current->next == NULL) { //deletes tail node
             current->prev->next = NULL;
-        } else if(current->prev == NULL){ //deletes head node
-            cout << endl << "in head" << endl;
+        } else if (current->next != NULL and current->prev == NULL) { //deletes head node
             current->next->prev = NULL;
-            current->next = head;
-        } else{ //deletes middle node
-            cout << endl << "in body" << endl;
+            head = current->next;
+        } else if(current->next != NULL and current->prev != NULL){ //deletes middle node
             current->prev->next = current->next;
             current->next->prev = current->prev;
         }
@@ -104,10 +97,21 @@ void LinkedList::printList(bool backwards){ //doesnt read backwards yet
     Node *current = head;
     int nodeNumber = 0;
 
-    while(current){
-        nodeNumber++;
-        cout << nodeNumber << ": " << current->data.id << ": " << current->data.data << endl;
-        current = current->next;
+    if(!backwards){
+        while (current) {
+            nodeNumber++;
+            cout << nodeNumber << ": " << current->data.id << ": " << current->data.data << endl;
+            current = current->next;
+        }
+    } else{
+        while(current and current->next != NULL){
+            current = current->next;
+        }
+        while(current){
+            nodeNumber++;
+            cout << nodeNumber << ": " << current->data.id << ": " << current->data.data << endl;
+            current = current->prev;
+        }
     }
 }
 
@@ -132,7 +136,6 @@ void LinkedList::clearList(){
 }
 
 bool LinkedList::exists(int id){
-    cout << endl << "exists called" << endl;
     bool found = false;
     Node *current = head;
 
