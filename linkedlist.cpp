@@ -13,25 +13,28 @@ LinkedList::~LinkedList(){
     clearList();
 }
 
+Node* LinkedList::createNode(int id, string* information){
+    Node *newNode = new Node;
+    newNode->data.id = id;
+    newNode->data.data = *information;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+    return newNode;
+}
+
 bool LinkedList::addNode(int id, string* information){
     bool added = false;
     if(id > 0 and *information != ""){
         Node *current = head; //head initially is NULL
         if(head == NULL){
-            head = new Node;
-            head->data.id = id;
-            head->data.data = *information;
-            head->next = NULL;
-            head->prev = NULL;
+            head = createNode(id, information);
             added = true;
         }
         else{
             while(id > current->data.id and current->next != NULL){
                 current = current->next;
             }
-            Node *insertNode = new Node;
-            insertNode->data.id = id;
-            insertNode->data.data = *information;
+            Node *insertNode = createNode(id, information);
             if(id < current->data.id and current->prev != NULL){ //adds node in list body
                 insertNode->next = current;
                 insertNode->prev = current->prev;
@@ -49,6 +52,8 @@ bool LinkedList::addNode(int id, string* information){
                 insertNode->prev = current;
                 current->next = insertNode;
                 added = true;
+            } else {
+                delete insertNode;
             }
         }
     }
