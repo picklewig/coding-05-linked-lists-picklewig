@@ -30,30 +30,28 @@ bool LinkedList::addNode(int id, string* information){
             head = createNode(id, information);
             added = true;
         }
-        else{
+        else{//head first, then tail, else body
             while(id > current->data.id and current->next != NULL){
                 current = current->next;
             }
-            Node *insertNode = createNode(id, information);
             if(id < current->data.id and current->prev != NULL){ //adds node in list body
+                Node *insertNode = createNode(id, information);
                 insertNode->next = current;
                 insertNode->prev = current->prev;
                 current->prev->next = insertNode;
                 current->prev = insertNode;
                 added = true;
             } else if (id < current->data.id and current->prev == NULL) { //adds new head node
+                Node *insertNode = createNode(id, information);
                 current->prev = insertNode;
                 insertNode->next = current;
-                insertNode->prev = NULL;
                 head = insertNode;
                 added = true;
             } else if (id > current->data.id and current->next == NULL) { //adds new tail node
-                insertNode->next = NULL;
+                Node *insertNode = createNode(id, information);
                 insertNode->prev = current;
                 current->next = insertNode;
                 added = true;
-            } else {
-                delete insertNode;
             }
         }
     }
